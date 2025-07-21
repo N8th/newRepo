@@ -167,6 +167,11 @@
             width: 100%;
             position: relative;
             overflow: hidden;
+            -webkit-appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .btn:hover {
@@ -176,6 +181,7 @@
 
         .btn:active {
             transform: translateY(0);
+            background: linear-gradient(135deg, #3182ce, #553c9a);
         }
 
         .btn:disabled {
