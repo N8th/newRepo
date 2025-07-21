@@ -1,1 +1,99 @@
-<p>Hello</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GitHub Repo Setup Assistant</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      padding: 30px;
+    }
+    .step {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    .links a {
+      display: block;
+      margin: 5px 0;
+      color: #0366d6;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="step" id="step1">
+    <h2>Step 1: Enter a repository name</h2>
+    <input type="text" id="repoName" placeholder="e.g., newRepo"/>
+    <button onclick="goToGitHubCreate()">Go to GitHub to create</button>
+  </div>
+
+  <div class="step hidden" id="step2">
+    <h2>Step 2: Click "Create repository" on GitHub, then return</h2>
+    <p>After creating the repo, click the button below to continue.</p>
+    <button onclick="showStep3()">Done – Next Step</button>
+  </div>
+
+  <div class="step hidden" id="step3">
+    <h2>Step 3: Add content to your repo</h2>
+    <p>Choose one of the following to get started:</p>
+    <div class="links" id="repoLinks"></div>
+    <button onclick="showStep4()">Done – Next Step</button>
+  </div>
+
+  <div class="step hidden" id="step4">
+    <h2>Step 4: Configure GitHub Pages</h2>
+    <p>Click below to open the GitHub Pages settings. Set the source branch to <b>main</b> and click <b>Save</b>.</p>
+    <div id="pagesLink"></div>
+  </div>
+
+  <script>
+    let user = "N8th";
+
+    function goToGitHubCreate() {
+      const repo = document.getElementById("repoName").value.trim();
+      if (!repo) return alert("Enter a repo name first.");
+      const url = `https://github.com/new?name=${encodeURIComponent(repo)}`;
+      window.open(url, "_blank");
+
+      // Store and show next step
+      localStorage.setItem("repoName", repo);
+      document.getElementById("step2").classList.remove("hidden");
+    }
+
+    function showStep3() {
+      const repo = localStorage.getItem("repoName");
+      const base = `https://github.com/${user}/${repo}`;
+      document.getElementById("repoLinks").innerHTML = `
+        <a href="${base}/upload" target="_blank">Upload files</a>
+        <a href="${base}/new/main" target="_blank">Create new file</a>
+      `;
+      document.getElementById("step3").classList.remove("hidden");
+    }
+
+    function showStep4() {
+      const repo = localStorage.getItem("repoName");
+      const url = `https://github.com/${user}/${repo}/settings/pages`;
+      document.getElementById("pagesLink").innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+      document.getElementById("step4").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
